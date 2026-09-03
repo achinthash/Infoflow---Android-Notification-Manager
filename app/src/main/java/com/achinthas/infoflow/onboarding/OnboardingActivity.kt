@@ -1,10 +1,13 @@
 package com.achinthas.infoflow.onboarding
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.achinthas.infoflow.MainActivity
 import com.achinthas.infoflow.R
 
 class OnboardingActivity : AppCompatActivity(){
@@ -100,7 +103,13 @@ class OnboardingActivity : AppCompatActivity(){
 
     // complete the onboarding setup
     private fun completeOnboarding(){
-        Toast.makeText(this,"setup is completed", Toast.LENGTH_SHORT).show()
+
+        val sharedPref = getSharedPreferences("app_pref", Context.MODE_PRIVATE)
+        sharedPref.edit().putBoolean("is_onboarding_completed", true).apply()
+
+        startActivity(Intent(this,MainActivity::class.java))
+        finish()
+
     }
 
 

@@ -25,16 +25,15 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        startActivity(Intent(this, OnboardingActivity::class.java))
+        // onboarding status save on shared preference
+        val sharedPref = getSharedPreferences("app_pref", Context.MODE_PRIVATE)
+        val isCompleted = sharedPref.getBoolean("is_onboarding_completed", false)
 
+        if(!isCompleted){
+            startActivity(Intent(this, OnboardingActivity::class.java))
+            finish()
+            return
+        }
 
-//        val sharedPref = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-//        val isCompleted = sharedPref.getBoolean("is_onboarding_completed", false)
-//
-//        if (!isCompleted) {
-//            startActivity(Intent(this, OnboardingActivity::class.java))
-//            finish()
-//            return
-//        }
     }
 }
