@@ -8,10 +8,37 @@ import android.graphics.drawable.Drawable
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 
 class NotiListenerService : NotificationListenerService() {
+
+    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    private val database by lazy {
+        AppDatabase.getDatabase(applicationContext)
+    }
+
+    private val appDao by lazy {
+        database.appDao()
+    }
+
+    private val appRepository by lazy {
+        AppRepository(appDao)
+    }
+
+    private val notificationDao by lazy {
+        database.notificationDao()
+    }
+
+    private val notificationRepository by lazy {
+        NotificationRepository(notificationDao)
+    }
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
@@ -55,74 +82,82 @@ class NotiListenerService : NotificationListenerService() {
         //  if(ongoing) return
 
 
+        serviceScope.launch{
 
-        // Folder per package so files from different package
-        val folder = File(getExternalFilesDir(null), "InfoFlow_$packageName")
-        folder.mkdirs()
+            try {
 
-        //  app icons and images
+                // Folder per package so files from different package
+                val folder = File(getExternalFilesDir(null), "InfoFlow_$packageName")
+                folder.mkdirs()
 
-        // 1. Get Application Icon (App Logo)
-        ///   IMPORTANT
-        /// commented app icon and large icon reason -  wasting image processing time and space
-        // able to access this 2 in frontend using package name
+                //  app icons and images
 
-        //        val appIconDrawable = try {
-        //            packageManager.getApplicationIcon(packageName)
-        //        } catch (e: Exception) {
-        //            null
-        //        }
-        //        saveDrawable(appIconDrawable, folder, "app_icon_$packageName.png")
+                // 1. Get Application Icon (App Logo)
+                ///   IMPORTANT
+                /// commented app icon and large icon reason -  wasting image processing time and space
+                // able to access this 2 in frontend using package name
 
-        // 2. Small icon (status bar monochrome icon)
-        //        val smallIconDrawable = try {
-        //            sbn.notification.smallIcon?.loadDrawable(this)
-        //        } catch (e: Exception) {
-        //            null
-        //        }
-        //        saveDrawable(smallIconDrawable, folder, "small_icon_$packageName.png")
+                //        val appIconDrawable = try {
+                //            packageManager.getApplicationIcon(packageName)
+                //        } catch (e: Exception) {
+                //            null
+                //        }
+                //        saveDrawable(appIconDrawable, folder, "app_icon_$packageName.png")
+
+                // 2. Small icon (status bar monochrome icon)
+                //        val smallIconDrawable = try {
+                //            sbn.notification.smallIcon?.loadDrawable(this)
+                //        } catch (e: Exception) {
+                //            null
+                //        }
+                //        saveDrawable(smallIconDrawable, folder, "small_icon_$packageName.png")
+
+
+                // 3. Large icon (avatar / thumbnail shown on the left of the notification)
+                val largeIconDrawable = try {
+                    sbn.notification.getLargeIcon()?.loadDrawable(applicationContext)
+                } catch (e: Exception) {
+                    null
+                }
+                val largeIconPath = saveDrawable(largeIconDrawable, folder, "large_icon_${id}_${postTime}.png")
+
+                // 4. Big picture — classic Bitmap style (older API / most apps)
+                // IMPORTANT -  Above Android 12+ (API level 31) some apps use  EXTRA_PICTURE_ICON instead but
+                val bigPictureBitmap: Bitmap? = extras.getParcelable(Notification.EXTRA_PICTURE)
+                val bigPicturePath = saveBitmap(bigPictureBitmap, folder, "big_picture_${id}_${postTime}.png") // direct
+
+
+                // app details
+                val app = appRepository.getOrCreateApp(
+                    packageName = packageName,
+                    appName = appName
+                )
+
+                // notification details
+                val notification  = NotificationEntity(
+                    appId = app.id,
+                    notificationKey = sbn.key,
+                    title = title,
+                    text = text,
+                    bigTitle = bigTitle,
+                    bigText = bigText?.toString(),
+                    subText = subText?.toString(),
+                    category = category,
+                    channelId = sbn.notification.channelId,
+                    postedTime = sbn.postTime,
+                    bigPicture = bigPicturePath,
+                    largeIcon = largeIconPath,
+                    isOngoing = ongoing
+                )
+
+                notificationRepository.insertNotification(notification)
 
 
 
-        // 3. Large icon (avatar / thumbnail shown on the left of the notification)
-        val largeIconDrawable = try {
-            sbn.notification.getLargeIcon()?.loadDrawable(applicationContext)
-        } catch (e: Exception) {
-            null
+            } catch (e: Exception) {
+                Log.e("NotificationService", "Failed to save to Room", e)
+            }
         }
-        val largeIconPath = saveDrawable(largeIconDrawable, folder, "large_icon_${id}_${postTime}.png")
-
-        // 4. Big picture — classic Bitmap style (older API / most apps)
-        // IMPORTANT -  Above Android 12+ (API level 31) some apps use  EXTRA_PICTURE_ICON instead but
-        val bigPictureBitmap: Bitmap? = extras.getParcelable(Notification.EXTRA_PICTURE)
-        val bigPicturePath = saveBitmap(bigPictureBitmap, folder, "big_picture_${id}_${postTime}.png") // direct
-
-
-        Log.d("NotificationService",
-            """
-                -----------------------------
-                Received Notification:
-                Key         : ${sbn.key}
-                ID          : ${sbn.id}
-                Tag         : ${sbn.tag}
-                Package     : ${sbn.packageName}
-                Title       : $title
-                bigTitle    : $bigTitle
-                Text        : $text
-                Posted Time : $postTime
-                Channel ID  : ${sbn.notification.channelId}
-                bigText : $bigText
-                subText : $subText
-           
-                category : $category
-                ongoing : $ongoing
-                
-                
-                ----------------------------
-            
-                -----------------------------
-                """.trimIndent()
-        )
     }
 
 
@@ -172,6 +207,7 @@ class NotiListenerService : NotificationListenerService() {
 //    }
 
     override fun onDestroy() {
+        serviceScope.cancel()
         super.onDestroy()
     }
 }
