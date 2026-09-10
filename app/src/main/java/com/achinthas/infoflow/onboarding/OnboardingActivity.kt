@@ -3,9 +3,11 @@ package com.achinthas.infoflow.onboarding
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PowerManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.achinthas.infoflow.MainActivity
 import com.achinthas.infoflow.R
@@ -35,11 +37,11 @@ class OnboardingActivity : AppCompatActivity(){
                 super.onPageSelected(position)
 
                 when(position) {
-                     0 -> {
-                         btnNext.text = "Next"
-                         btnPrev.visibility = Button.GONE
-                         btnNext.visibility = Button.VISIBLE
-                     }
+                    0 -> {
+                        btnNext.text = "Next"
+                        btnPrev.visibility = Button.GONE
+                        btnNext.visibility = Button.VISIBLE
+                    }
                     1 -> {
                         btnNext.text = "Next"
                         btnPrev.text = "Prev"
@@ -110,6 +112,18 @@ class OnboardingActivity : AppCompatActivity(){
         startActivity(Intent(this,MainActivity::class.java))
         finish()
 
+    }
+
+    // fun for check notification lister already got access
+    fun isNotificationListenerEnabled(context: Context): Boolean {
+        val enabledListeners = NotificationManagerCompat.getEnabledListenerPackages(context)
+        return enabledListeners.contains(context.packageName)
+    }
+
+    // fun for check battery opt already got access
+    fun isIgnoringBatteryOptimizations(context: Context): Boolean {
+        val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+        return powerManager.isIgnoringBatteryOptimizations(context.packageName)
     }
 
 

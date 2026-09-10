@@ -9,7 +9,7 @@
     android:padding="32dp">
 
     <ImageView
-       android:layout_width="160dp"
+        android:layout_width="160dp"
         android:layout_height="160dp"
         android:src="@drawable/onboarding_img_1" />
 
@@ -32,7 +32,7 @@
 
 
     <Button
-        android:id="@+id/btnGrantNotification"
+        android:id="@+id/btnGrantNotificationPerm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
