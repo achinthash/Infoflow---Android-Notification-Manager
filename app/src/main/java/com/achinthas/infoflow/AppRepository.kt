@@ -27,6 +27,11 @@ class AppRepository(private val appDao: AppDao) {
 
         val generatedId = appDao.insertApp(newApp)
 
+        if (generatedId == -1L) {
+            return appDao.getAppByPackageName(packageName)
+                ?: error("insertApp : $packageName ")
+        }
+
         return newApp.copy(id = generatedId)
     }
 
