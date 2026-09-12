@@ -6,46 +6,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.achinthas.infoflow.AppWithNotifications
 import com.achinthas.infoflow.R
 
-class AppAdapter (private var apps : List<AppWithNotifications>) :
-    RecyclerView.Adapter<AppAdapter.AppViewHolder>(){
+class AppAdapter(private var apps: List<AppWithNotifications>) :
+    RecyclerView.Adapter<AppAdapter.AppViewHolder>() {
 
-    class AppViewHolder(
-        itemView: View
-    ) : RecyclerView.ViewHolder(itemView) {
+    class AppViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val txtappName: TextView = itemView.findViewById(R.id.txt_appName)
+        val txt_time: TextView = itemView.findViewById(R.id.txt_time)
+        val appIcon: ImageView = itemView.findViewById(R.id.appIcon)
 
-        val txtappName : TextView = itemView.findViewById<TextView>(R.id.txt_appName)
-
-        val txt_time : TextView = itemView.findViewById<TextView>(R.id.txt_time)
-        val appIcon : ImageView = itemView.findViewById<ImageView>(R.id.appIcon)
-
-        val notificationRecycler : RecyclerView = itemView.findViewById<RecyclerView>(R.id.recyclerNotifications)
-
+        val notificationsContainer : LinearLayout = itemView.findViewById<LinearLayout>(R.id.notificationsContainer)
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_app, parent, false)
-
         return AppViewHolder(view)
-
     }
 
     override fun onBindViewHolder(holder: AppViewHolder, position: Int) {
-
-
         val app = apps[position]
-
 
         holder.txtappName.text = app.app.appName
 
         val packageManager = holder.itemView.context.packageManager
-
         try {
             val icon = packageManager.getApplicationIcon(app.app.packageName)
             holder.appIcon.setImageDrawable(icon)
@@ -53,12 +42,8 @@ class AppAdapter (private var apps : List<AppWithNotifications>) :
             holder.appIcon.setImageResource(R.drawable.baseline_android_24)
         }
 
-        val notifications = app.notifications.sortedByDescending {
-            it.postedTime
-        }.take(5)
-
+        val notifications = app.notifications.sortedByDescending { it.postedTime }.take(4)
         val lastNotification = notifications.firstOrNull()
-
 
         holder.txt_time.text = lastNotification?.let {
             DateUtils.getRelativeTimeSpanString(
@@ -68,19 +53,29 @@ class AppAdapter (private var apps : List<AppWithNotifications>) :
             ).toString()
         } ?: ""
 
+        holder.notificationsContainer.removeAllViews()
 
+        val inflater = LayoutInflater.from(holder.itemView.context)
 
-        holder.notificationRecycler.layoutManager =
-            LinearLayoutManager(holder.itemView.context)
+        for(notification in notifications) {
+            val childView = inflater.inflate(
+                R.layout.item_app_with_notification,
+                holder.notificationsContainer,
+                false
+            )
 
-        holder.notificationRecycler.adapter =
-            NotificationAdapter(notifications)
+            val txtTitle = childView.findViewById<TextView>(R.id.txt_title)
+            val txtText = childView.findViewById<TextView>(R.id.txt_text)
+
+            txtTitle.text = notification.title ?: ""
+            txtText.text = notification.text ?: ""
+
+            holder.notificationsContainer.addView(childView)
+        }
 
     }
 
-    override fun getItemCount(): Int {
-        return apps.size
-    }
+    override fun getItemCount(): Int = apps.size
 
     fun updateData(newApps: List<AppWithNotifications>) {
         apps = newApps
