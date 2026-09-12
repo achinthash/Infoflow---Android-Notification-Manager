@@ -3,18 +3,19 @@ package com.achinthas.infoflow
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import com.achinthas.infoflow.notificationView.NotificationViewFragment
 import com.achinthas.infoflow.onboarding.OnboardingActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -65,6 +66,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         replaceFragment(HomeViewFragment())
+
+
+
     }
 
     private fun replaceFragment(fragment: Fragment){

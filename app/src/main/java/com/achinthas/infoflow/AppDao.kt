@@ -19,7 +19,7 @@ interface AppDao {
     @Query("SELECT * FROM apps WHERE packageName = :packageName LIMIT 1")
     suspend fun getAppByPackageName(packageName: String): AppEntity?
 
-    @Query(""" SELECT * FROM apps ORDER BY appName ASC""")
+    @Query(""" SELECT * FROM apps """)
     @Transaction
     fun getAllAppsWithNotifications(): Flow<List<AppWithNotifications>>
 }
