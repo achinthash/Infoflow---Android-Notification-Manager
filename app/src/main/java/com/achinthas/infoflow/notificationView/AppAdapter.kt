@@ -1,7 +1,9 @@
 package com.achinthas.infoflow.notificationView
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.text.format.DateUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,6 +73,20 @@ class AppAdapter(private var apps: List<AppWithNotifications>) :
             txtText.text = notification.text ?: ""
 
             holder.notificationsContainer.addView(childView)
+        }
+
+        // navigate notifications list page
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+
+            val intent = Intent(context, NotificationsList::class.java).apply {
+                putExtra("EXTRA_APP_ID", app.app.id)
+                putExtra("EXTRA_PACKAGE_NAME", app.app.packageName)
+                putExtra("EXTRA_APP_NAME", app.app.appName)
+            }
+
+
+            context.startActivity(intent)
         }
 
     }
