@@ -171,7 +171,7 @@ class NotiListenerService : NotificationListenerService() {
         return try {
             val file = File(folder, filename)
             FileOutputStream(file).use { out ->
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
             }
 
             file.absolutePath
