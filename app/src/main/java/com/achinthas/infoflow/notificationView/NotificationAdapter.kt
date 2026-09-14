@@ -21,13 +21,15 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class NotificationAdapter(private var notifications: List<NotificationEntity>,
+class NotificationAdapter(private var allNotifications: List<NotificationEntity>,
                           private var repository: NotificationRepository,
                           private val onSelectionChanged: (Int) -> Unit) :
     RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
 
     private var isSelection = false
     private val selectedIds = mutableSetOf<Long>()
+
+    private var displayedNotifications: MutableList<NotificationEntity> = allNotifications.toMutableList()
 
     class NotificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -59,7 +61,8 @@ class NotificationAdapter(private var notifications: List<NotificationEntity>,
         holder: NotificationViewHolder,
         position: Int
     ) {
-        val notification = notifications[position]
+
+        val notification = displayedNotifications[position]
 
         // Text
         holder.txtTitle.text = notification.title ?: ""
@@ -317,7 +320,7 @@ class NotificationAdapter(private var notifications: List<NotificationEntity>,
 
 
 
-    override fun getItemCount(): Int = notifications.size
+    override fun getItemCount(): Int = displayedNotifications.size
 
 
     fun clearSelection() {
@@ -327,10 +330,26 @@ class NotificationAdapter(private var notifications: List<NotificationEntity>,
         notifyDataSetChanged()
     }
 
-    fun updateData(newApps: List<NotificationEntity>) {
-        notifications = newApps
+
+    fun updateData(newNotifications: List<NotificationEntity>) {
+        allNotifications = newNotifications
+        displayedNotifications = newNotifications.toMutableList()
         notifyDataSetChanged()
     }
 
+    // Call this function when the search text changes
+    fun filter(query: String) {
+        displayedNotifications = if (query.isEmpty()) {
+            allNotifications.toMutableList()
+        } else {
+            val lowerCaseQuery = query.lowercase(Locale.getDefault())
+            allNotifications.filter { item ->
+                // Check matching fields
+                item.title?.lowercase(Locale.getDefault())?.contains(lowerCaseQuery) == true ||
+                        item.text?.lowercase(Locale.getDefault())?.contains(lowerCaseQuery) == true
+            }.toMutableList()
+        }
+        notifyDataSetChanged()
+    }
 
 }

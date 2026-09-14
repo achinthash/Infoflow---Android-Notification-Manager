@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
+import android.view.Menu
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -51,6 +52,9 @@ class NotificationsList: AppCompatActivity() {
 
         toolbarDeleteBtn.visibility = View.GONE
 
+
+//        val searchView = findViewById<androidx.appcompat.widget.SearchView>(com.achinthas.infoflow.R.id.searchView)
+
         setSupportActionBar(toolbar)
 
         supportActionBar?.apply {
@@ -93,8 +97,45 @@ class NotificationsList: AppCompatActivity() {
                 adapter.clearSelection()
             }
         }
+
+//        searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                // Trigger filter on keyboard submit
+//                adapter.filter(query.orEmpty())
+//                return true
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                // Trigger filter continuously as the user types
+//                adapter.filter(newText.orEmpty())
+//                return true
+//            }
+//        })
+
+
+
     }
 
+     override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(com.achinthas.infoflow.R.menu.search_menu, menu)
+
+        val searchItem = menu.findItem(com.achinthas.infoflow.R.id.action_search)
+        val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
+
+        searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                adapter.filter(query.orEmpty())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter(newText.orEmpty())
+                return true
+            }
+        })
+
+        return super.onCreateOptionsMenu(menu)
+    }
     private fun setupRecyclerView() {
         recyclerView = findViewById(com.achinthas.infoflow.R.id.notificationListRecyclerView)
 
