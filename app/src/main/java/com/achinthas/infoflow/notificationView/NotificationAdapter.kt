@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -21,8 +22,12 @@ import java.util.Date
 import java.util.Locale
 
 class NotificationAdapter(private var notifications: List<NotificationEntity>,
-                          private var repository: NotificationRepository ) :
+                          private var repository: NotificationRepository,
+                          private val onSelectionChanged: (Int) -> Unit) :
     RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
+
+    private var isSelection = false
+    private val selectedIds = mutableSetOf<Long>()
 
     class NotificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -35,6 +40,9 @@ class NotificationAdapter(private var notifications: List<NotificationEntity>,
         val txtTime: TextView = itemView.findViewById(com.achinthas.infoflow.R.id.txt_time)
 
         val imgUnreadIndicator: ImageView = itemView.findViewById(com.achinthas.infoflow.R.id.img_unreadIndicator)
+
+        val cbCheckBox : CheckBox = itemView.findViewById(com.achinthas.infoflow.R.id.checkBox)
+
     }
 
     override fun onCreateViewHolder(
@@ -72,125 +80,167 @@ class NotificationAdapter(private var notifications: List<NotificationEntity>,
         holder.txtTime.text = formatSmartTime(notification.postedTime)
 
 
+        // checkBox
+
+        holder.cbCheckBox.visibility = if(isSelection) View.VISIBLE else View.GONE
+
+        holder.cbCheckBox.setOnCheckedChangeListener(null)
+
+        holder.cbCheckBox.isChecked = selectedIds.contains(notification.id)
+
+
+        holder.cbCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked){
+                selectedIds.add(notification.id)
+            } else {
+                selectedIds.remove(notification.id)
+            }
+
+            // If nothing selected, leave selection mode
+            if(selectedIds.isEmpty()){
+                isSelection = false
+                notifyDataSetChanged()
+            }
+
+            onSelectionChanged(selectedIds.size)
+        }
+
         // selected notification details
 
         holder.itemView.setOnClickListener {
 
-            // add notification mark as read
-            if(!notification.isRead){
+            //  Selection mode
+            if(isSelection){
 
-                notification.isRead = true
-
-                holder.imgUnreadIndicator.visibility = View.GONE
-
-                CoroutineScope(Dispatchers.IO).launch {
-                    repository.markAsRead(notification.id)
+                if(selectedIds.contains(notification.id)){
+                    selectedIds.remove(notification.id)
+                }else{
+                    selectedIds.add(notification.id)
                 }
+                notifyDataSetChanged()
+                onSelectionChanged(selectedIds.size)
             }
+            else {
 
-            val context = holder.itemView.context
+                // add notification mark as read
+                if (!notification.isRead) {
 
-            val dialog = Dialog(context)
+                    notification.isRead = true
 
-            dialog.setContentView(
-                com.achinthas.infoflow.R.layout.dialog_notification_details
-            )
+                    holder.imgUnreadIndicator.visibility = View.GONE
 
-            val title =
-                dialog.findViewById<TextView>(com.achinthas.infoflow.R.id.dialogTitle)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        repository.markAsRead(notification.id)
+                    }
+                }
 
-            val time =
-                dialog.findViewById<TextView>(com.achinthas.infoflow.R.id.dialogTime)
+                val context = holder.itemView.context
 
-            val text =
-                dialog.findViewById<TextView>(com.achinthas.infoflow.R.id.dialogText)
+                val dialog = Dialog(context)
 
-            val image =
-                dialog.findViewById<ImageView>(com.achinthas.infoflow.R.id.dialogImage)
+                dialog.setContentView(
+                    com.achinthas.infoflow.R.layout.dialog_notification_details
+                )
 
-            val bigText =
-                dialog.findViewById<TextView>(com.achinthas.infoflow.R.id.dialogBigText)
+                val title =
+                    dialog.findViewById<TextView>(com.achinthas.infoflow.R.id.dialogTitle)
 
-            val bigTitle =
-                dialog.findViewById<TextView>(com.achinthas.infoflow.R.id.dialogBigTitle)
+                val time =
+                    dialog.findViewById<TextView>(com.achinthas.infoflow.R.id.dialogTime)
 
-            val subText =
-                dialog.findViewById<TextView>(com.achinthas.infoflow.R.id.dialogSubText)
+                val text =
+                    dialog.findViewById<TextView>(com.achinthas.infoflow.R.id.dialogText)
 
+                val image =
+                    dialog.findViewById<ImageView>(com.achinthas.infoflow.R.id.dialogImage)
 
-            // assign values
+                val bigText =
+                    dialog.findViewById<TextView>(com.achinthas.infoflow.R.id.dialogBigText)
 
-            // Title
-            title.text = notification.title ?: "No title"
+                val bigTitle =
+                    dialog.findViewById<TextView>(com.achinthas.infoflow.R.id.dialogBigTitle)
 
-            // Time
-            time.text = SimpleDateFormat(
-                "dd MMM yyyy, hh:mm a",
-                Locale.getDefault()
-            ).format(Date(notification.postedTime))
-
-
-
-            // Text
-            if (notification.text.isNullOrBlank()) {
-
-                text.visibility = View.GONE
-
-            } else {
-
-                text.visibility = View.VISIBLE
-                text.text = notification.text
-            }
-
-            // bigTitle
-            if (notification.bigTitle.isNullOrBlank()) {
-
-                bigTitle.visibility = View.GONE
-
-            } else {
-
-                bigTitle.visibility = View.VISIBLE
-                bigTitle.text = notification.bigTitle
-            }
-
-            // subText
-            if (notification.subText.isNullOrBlank()) {
-
-                subText.visibility = View.GONE
-
-            } else {
-
-                subText.visibility = View.VISIBLE
-                subText.text = notification.subText
-            }
+                val subText =
+                    dialog.findViewById<TextView>(com.achinthas.infoflow.R.id.dialogSubText)
 
 
-            // Big text
-            if (notification.bigText.isNullOrBlank()) {
+                // assign values
 
-                bigText.visibility = View.GONE
+                // Title
+                title.text = notification.title ?: "No title"
 
-            } else {
+                // Time
+                time.text = SimpleDateFormat(
+                    "dd MMM yyyy, hh:mm a",
+                    Locale.getDefault()
+                ).format(Date(notification.postedTime))
 
-                bigText.visibility = View.VISIBLE
-                bigText.text = notification.bigText
-            }
+
+                // Text
+                if (notification.text.isNullOrBlank()) {
+
+                    text.visibility = View.GONE
+
+                } else {
+
+                    text.visibility = View.VISIBLE
+                    text.text = notification.text
+                }
+
+                // bigTitle
+                if (notification.bigTitle.isNullOrBlank()) {
+
+                    bigTitle.visibility = View.GONE
+
+                } else {
+
+                    bigTitle.visibility = View.VISIBLE
+                    bigTitle.text = notification.bigTitle
+                }
+
+                // subText
+                if (notification.subText.isNullOrBlank()) {
+
+                    subText.visibility = View.GONE
+
+                } else {
+
+                    subText.visibility = View.VISIBLE
+                    subText.text = notification.subText
+                }
 
 
-            // Big picture
-            if (!notification.bigPicture.isNullOrBlank()) {
+                // Big text
+                if (notification.bigText.isNullOrBlank()) {
 
-                val file = File(notification.bigPicture)
+                    bigText.visibility = View.GONE
 
-                if (file.exists()) {
+                } else {
 
-                    val bitmap =
-                        BitmapFactory.decodeFile(file.absolutePath)
+                    bigText.visibility = View.VISIBLE
+                    bigText.text = notification.bigText
+                }
 
-                    if (bitmap != null) {
 
-                        image.visibility = View.VISIBLE
-                        image.setImageBitmap(bitmap)
+                // Big picture
+                if (!notification.bigPicture.isNullOrBlank()) {
+
+                    val file = File(notification.bigPicture)
+
+                    if (file.exists()) {
+
+                        val bitmap =
+                            BitmapFactory.decodeFile(file.absolutePath)
+
+                        if (bitmap != null) {
+
+                            image.visibility = View.VISIBLE
+                            image.setImageBitmap(bitmap)
+
+                        } else {
+
+                            image.visibility = View.GONE
+                        }
 
                     } else {
 
@@ -202,24 +252,37 @@ class NotificationAdapter(private var notifications: List<NotificationEntity>,
                     image.visibility = View.GONE
                 }
 
-            } else {
 
-                image.visibility = View.GONE
+                dialog.show()
+
+
+                // Dialog width
+                dialog.window?.setLayout(
+                    (context.resources.displayMetrics.widthPixels * 0.92).toInt(),
+                    WindowManager.LayoutParams.WRAP_CONTENT
+                )
+
             }
+        }
 
 
-            dialog.show()
+        // long press notifications select
+        holder.itemView.setOnLongClickListener {
+            if(!isSelection){
+                isSelection = true
+            }
+            selectedIds.add(notification.id)
 
-
-            // Dialog width
-            dialog.window?.setLayout(
-                (context.resources.displayMetrics.widthPixels * 0.92).toInt(),
-                WindowManager.LayoutParams.WRAP_CONTENT
-            )
+            onSelectionChanged(selectedIds.size)
+            notifyDataSetChanged()
+            true
         }
     }
 
 
+    fun getSelectedIds(): Set<Long>{
+        return selectedIds
+    }
 
     private fun loadNotificationImage(imageView: ImageView, filePath: String?) {
 
@@ -255,6 +318,14 @@ class NotificationAdapter(private var notifications: List<NotificationEntity>,
 
 
     override fun getItemCount(): Int = notifications.size
+
+
+    fun clearSelection() {
+        isSelection = false
+        selectedIds.clear()
+        onSelectionChanged(0)
+        notifyDataSetChanged()
+    }
 
     fun updateData(newApps: List<NotificationEntity>) {
         notifications = newApps

@@ -8,18 +8,32 @@
     android:paddingStart="15dp"
     android:paddingEnd="15dp">
 
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:focusable="false"
+        android:buttonTint="?attr/colorPrimary"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
     <!-- Notification image -->
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/img_large_icon"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginStart="8dp"
         android:scaleType="centerCrop"
         android:contentDescription="Notification image"
         android:background="@android:color/transparent"
 
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/checkBox"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
+
 
     <!-- Time -->
     <TextView
@@ -38,13 +52,13 @@
         android:id="@+id/img_unreadIndicator"
         android:layout_width="8dp"
         android:layout_height="8dp"
+        android:layout_marginEnd="8dp"
         android:contentDescription="Unread"
         android:visibility="gone"
 
         app:layout_constraintEnd_toStartOf="@id/txt_time"
         app:layout_constraintTop_toTopOf="@id/txt_time"
-        app:layout_constraintBottom_toBottomOf="@id/txt_time"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintBottom_toBottomOf="@id/txt_time" />
 
     <!-- Title -->
     <TextView

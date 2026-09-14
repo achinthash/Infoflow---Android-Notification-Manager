@@ -5,6 +5,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
+import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +29,9 @@ class NotificationsList: AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
 
+
+    private lateinit var toolbarDeleteBtn : ImageButton
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.achinthas.infoflow.R.layout.activity_notifications_list)
@@ -41,6 +46,10 @@ class NotificationsList: AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(com.achinthas.infoflow.R.id.toolbar)
         val toolbarTitle = findViewById<TextView>(com.achinthas.infoflow.R.id.toolbar_title)
         val toolbarImg = findViewById<ImageView>(com.achinthas.infoflow.R.id.toolbar_img)
+
+        toolbarDeleteBtn = findViewById<ImageButton>(com.achinthas.infoflow.R.id.toolbar_deleteButton)
+
+        toolbarDeleteBtn.visibility = View.GONE
 
         setSupportActionBar(toolbar)
 
@@ -70,6 +79,20 @@ class NotificationsList: AppCompatActivity() {
         } else {
             toolbarImg.setImageResource(com.achinthas.infoflow.R.drawable.baseline_android_24)
         }
+
+        toolbarDeleteBtn.setOnClickListener {
+
+            val selectedIds = adapter.getSelectedIds()
+
+            if(selectedIds.isEmpty()){
+                return@setOnClickListener
+            }
+
+            lifecycleScope.launch {
+                repository.deleteNotificationsByIds(selectedIds.toSet())
+                adapter.clearSelection()
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -82,7 +105,15 @@ class NotificationsList: AppCompatActivity() {
             database.notificationDao()
         )
 
-        adapter = NotificationAdapter(emptyList(),repository)
+        adapter = NotificationAdapter(emptyList(),repository){ selectedCount ->
+
+
+           toolbarDeleteBtn.visibility = if(selectedCount > 0){
+               View.VISIBLE
+               } else{
+               View.GONE
+               }
+        }
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(this@NotificationsList)
