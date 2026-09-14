@@ -22,4 +22,10 @@ interface NotificationDao {
         appId: Long
     ): Flow<List<NotificationEntity>>
 
+    @Query("Update notifications SET isRead = 1 WHERE id = :notificationId")
+    fun markAsRead(notificationId: Long)
+
+    @Query("DELETE FROM notifications WHERE id IN (:ids) ")
+    suspend fun deleteNotificationsByIds(ids: Set<Long>)
+
 }

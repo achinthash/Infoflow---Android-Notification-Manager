@@ -27,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".onboarding.OnboardingActivity" />
+        <activity android:name=".notificationView.NotificationsList" />
 
         <service
             android:name=".NotiListenerService"
