@@ -75,13 +75,22 @@ class NotificationsList: AppCompatActivity() {
     private fun setupRecyclerView() {
         recyclerView = findViewById(com.achinthas.infoflow.R.id.notificationListRecyclerView)
 
-        adapter = NotificationAdapter(emptyList())
+
+        val database = AppDatabase.getDatabase(this)
+
+        repository = NotificationRepository(
+            database.notificationDao()
+        )
+
+        adapter = NotificationAdapter(emptyList(),repository)
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(this@NotificationsList)
             adapter = this@NotificationsList.adapter
             setHasFixedSize(true)
         }
+
+
     }
 
     private fun loadNotifications() {
@@ -92,8 +101,6 @@ class NotificationsList: AppCompatActivity() {
             return
         }
 
-        val database = AppDatabase.getDatabase(this)
-        repository = NotificationRepository(database.notificationDao())
 
         lifecycleScope.launch {
 

@@ -50,7 +50,7 @@ data class NotificationEntity (
 
     val isOngoing: Boolean,
 
-    val isRead: Boolean = false,
+    var isRead: Boolean = false,
 
     val isRemoved: Boolean = false
 )

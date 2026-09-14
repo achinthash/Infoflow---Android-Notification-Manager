@@ -11,4 +11,8 @@ class NotificationRepository(private val notificationDao: NotificationDao) {
     fun getNotificationsByApp(appId: Long): Flow<List<NotificationEntity>>{
         return notificationDao.getNotificationsByApp(appId)
     }
+
+    suspend fun markAsRead(notificationId: Long) {
+        notificationDao.markAsRead(notificationId)
+    }
 }

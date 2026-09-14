@@ -11,12 +11,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.achinthas.infoflow.NotificationEntity
+import com.achinthas.infoflow.NotificationRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class NotificationAdapter(private var notifications: List<NotificationEntity>) :
+class NotificationAdapter(private var notifications: List<NotificationEntity>,
+                          private var repository: NotificationRepository ) :
     RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
 
     class NotificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -71,6 +76,18 @@ class NotificationAdapter(private var notifications: List<NotificationEntity>) :
 
         holder.itemView.setOnClickListener {
 
+            // add notification mark as read
+            if(!notification.isRead){
+
+                notification.isRead = true
+
+                holder.imgUnreadIndicator.visibility = View.GONE
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    repository.markAsRead(notification.id)
+                }
+            }
+
             val context = holder.itemView.context
 
             val dialog = Dialog(context)
@@ -101,7 +118,7 @@ class NotificationAdapter(private var notifications: List<NotificationEntity>) :
                 dialog.findViewById<TextView>(com.achinthas.infoflow.R.id.dialogSubText)
 
 
-
+            // assign values
 
             // Title
             title.text = notification.title ?: "No title"
