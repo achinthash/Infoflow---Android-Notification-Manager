@@ -41,7 +41,7 @@ class NotificationViewFragment : Fragment() {
 
 
 
-        adapter = AppAdapter(emptyList())
+        adapter = AppAdapter(emptyList(), repository)
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 

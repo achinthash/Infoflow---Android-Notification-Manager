@@ -42,4 +42,8 @@ class AppRepository(private val appDao: AppDao) {
     suspend fun getTotalAppsCount(): Int{
         return appDao.getTotalAppsCount()
     }
+
+    suspend fun deleteApp(id: Long){
+        return appDao.deleteApp(id)
+    }
 }

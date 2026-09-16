@@ -7,14 +7,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.achinthas.infoflow.AppRepository
 import com.achinthas.infoflow.AppWithNotifications
 import com.achinthas.infoflow.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class AppAdapter(private var apps: List<AppWithNotifications>) :
+class AppAdapter(private var apps: List<AppWithNotifications>, private var repository: AppRepository) :
     RecyclerView.Adapter<AppAdapter.AppViewHolder>() {
 
     class AppViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -24,6 +32,8 @@ class AppAdapter(private var apps: List<AppWithNotifications>) :
 
         val notificationsContainer : LinearLayout = itemView.findViewById<LinearLayout>(R.id.notificationsContainer)
 
+
+        val imgMenu: ImageButton = itemView.findViewById(R.id.img_menu)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppViewHolder {
@@ -89,6 +99,36 @@ class AppAdapter(private var apps: List<AppWithNotifications>) :
             context.startActivity(intent)
         }
 
+
+        // menu button
+        holder.imgMenu.setOnClickListener { view ->
+            val popup = PopupMenu(view.context, view)
+
+
+            popup.menu.add(0, 1, 1, "Delete")
+
+
+            popup.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+
+                    1 -> {
+                        deleteApp(app.app.id)
+                        true
+                    }
+                    else -> false
+                }
+            }
+
+            popup.show()
+        }
+
+    }
+
+    // delete app
+    private fun deleteApp(id: Long) {
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.deleteApp(id)
+        }
     }
 
     override fun getItemCount(): Int = apps.size
