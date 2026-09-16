@@ -19,4 +19,13 @@ class NotificationRepository(private val notificationDao: NotificationDao) {
     suspend fun deleteNotificationsByIds(ids: Set<Long>){
         notificationDao.deleteNotificationsByIds(ids)
     }
+
+
+    suspend fun getTotalNotificationCount():Int{
+        return notificationDao.getTotalNotificationCount()
+    }
+
+    suspend fun getTodayNotificationCount(startOfDay:Long):Int{
+        return notificationDao.getTodayNotificationCount(startOfDay)
+    }
 }
