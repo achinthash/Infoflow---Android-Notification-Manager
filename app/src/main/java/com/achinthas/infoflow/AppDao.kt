@@ -22,4 +22,10 @@ interface AppDao {
     @Query(""" SELECT * FROM apps """)
     @Transaction
     fun getAllAppsWithNotifications(): Flow<List<AppWithNotifications>>
+
+    @Query("SELECT COUNT(*) FROM apps")
+    suspend fun getTotalAppsCount(): Int
+
+    @Query("DELETE FROM apps WHERE id = :id")
+    suspend fun deleteApp(id: Long)
 }

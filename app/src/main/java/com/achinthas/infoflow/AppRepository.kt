@@ -38,4 +38,12 @@ class AppRepository(private val appDao: AppDao) {
     fun getAllAppsWithNotifications(): Flow<List<AppWithNotifications>>{
         return appDao.getAllAppsWithNotifications()
     }
+
+    suspend fun getTotalAppsCount(): Int{
+        return appDao.getTotalAppsCount()
+    }
+
+    suspend fun deleteApp(id: Long){
+        return appDao.deleteApp(id)
+    }
 }

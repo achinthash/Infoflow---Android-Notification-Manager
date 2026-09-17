@@ -1,13 +1,20 @@
 package com.achinthas.infoflow
 
 import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import androidx.core.app.NotificationCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -15,6 +22,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
+import java.util.Calendar
 
 class NotiListenerService : NotificationListenerService() {
 
@@ -38,6 +46,19 @@ class NotiListenerService : NotificationListenerService() {
 
     private val notificationRepository by lazy {
         NotificationRepository(notificationDao)
+    }
+
+    private companion object{
+        const val CHANNEL_ID = "infoflow_notification_channel"
+        const val NOTIFICATION_ID =  1001
+    }
+
+
+    override fun onCreate() {
+        super.onCreate()
+
+        createNotificationChannel()
+        updateOngoingNotification()
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
@@ -153,6 +174,9 @@ class NotiListenerService : NotificationListenerService() {
                 notificationRepository.insertNotification(notification)
 
 
+                // ongoing noti for shows data
+                updateOngoingNotification()
+
 
             } catch (e: Exception) {
                 Log.e("NotificationService", "Failed to save to Room", e)
@@ -161,6 +185,43 @@ class NotiListenerService : NotificationListenerService() {
     }
 
 
+    private fun updateOngoingNotification() {
+        serviceScope.launch {
+            try {
+                val calendar = Calendar.getInstance()
+                calendar.set(Calendar.HOUR_OF_DAY, 0)
+                calendar.set(Calendar.MINUTE, 0)
+                calendar.set(Calendar.SECOND, 0)
+                calendar.set(Calendar.MILLISECOND, 0)
+
+                val startOfDay = calendar.timeInMillis
+
+                val todayCount =
+                    notificationRepository.getTodayNotificationCount(startOfDay)
+
+                val totalCount =
+                    notificationRepository.getTotalNotificationCount()
+
+                val appsCount =
+                    appRepository.getTotalAppsCount()
+
+                val notificationManager =
+                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+                notificationManager.notify(
+                    NOTIFICATION_ID,
+                    buildNotification(
+                        todayCount,
+                        totalCount,
+                        appsCount
+                    )
+                )
+
+            } catch (e: Exception) {
+                Log.e("NotificationService", "Failed to update ongoing notification", e)
+            }
+        }
+    }
     private fun saveDrawable(drawable: Drawable?, folder: File, filename: String) : String? {
         if (drawable == null) return null
         return saveBitmap(drawableToBitmap(drawable), folder, filename)
@@ -199,6 +260,47 @@ class NotiListenerService : NotificationListenerService() {
         drawable.draw(canvas)
         return bmp
 
+    }
+
+
+    // notification channel create
+    private fun createNotificationChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val channel = NotificationChannel(
+                CHANNEL_ID,
+                "InfoFlow Notification Channel",
+                NotificationManager.IMPORTANCE_LOW
+            )
+
+            val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun buildNotification(todayCount: Int, totalCount: Int, appsCount: Int) : Notification{
+
+
+        // pending intent for notification click
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+
+        val pendingIntent = PendingIntent.getActivity(this, 0,
+            intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+
+
+        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.baseline_android_24)
+            .setContentTitle("$todayCount notifications today")
+            .setContentText("$totalCount total • $appsCount Apps")
+            .setOngoing(true)
+            .setShowWhen(false)
+            .setCategory(Notification.CATEGORY_SERVICE)
+            .setPriority(Notification.PRIORITY_LOW)
+            .setContentIntent(pendingIntent)
+            .build()
+
+        return notification
     }
 
 
