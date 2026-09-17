@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SettingsViewFragment">
+    tools:context=".settingsView.SettingsViewFragment">
 
     <!-- Toolbar -->
 
@@ -125,10 +125,10 @@
                 android:textStyle="bold" />
 
 
-            <!-- Filter Notifications -->
+            <!-- Block Notifications -->
 
             <LinearLayout
-                android:id="@+id/filterNotificationSetting"
+                android:id="@+id/blockNotificationSetting"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:background="?attr/selectableItemBackground"
@@ -142,7 +142,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:contentDescription="Filter notifications"
+                    android:contentDescription="Block notifications"
                     android:src="@drawable/baseline_filter_list_off_24"
                     app:tint="?attr/colorOnSurface" />
 
@@ -156,7 +156,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Filter Notifications"
+                        android:text="Block Notifications"
                         android:textColor="?attr/colorOnSurface"
                         android:textSize="16sp" />
 
@@ -164,7 +164,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="Choose which apps InfoFlow should monitor"
+                        android:text="Choose which apps should blocked in monitoring"
                         android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="13sp" />
 
