@@ -198,7 +198,7 @@
             <!-- Storage Usage -->
 
             <LinearLayout
-                android:id="@+id/storageSetting"
+                android:id="@+id/storageUsageSetting"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:background="?attr/selectableItemBackground"
@@ -235,7 +235,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="Calculating..."
+                        android:text="Notifications and files"
                         android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="13sp" />
 

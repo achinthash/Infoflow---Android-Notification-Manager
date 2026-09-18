@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import com.achinthas.infoflow.AppDatabase
 import com.achinthas.infoflow.R
 import java.io.File
 
@@ -34,6 +35,8 @@ class SettingsViewFragment : Fragment() {
 
         val blockNotificationSetting = view.findViewById<LinearLayout>(R.id.blockNotificationSetting)
 
+        val storageUsageSetting = view.findViewById<LinearLayout>(R.id.storageUsageSetting)
+
         blockNotificationSetting.setOnClickListener {
 
             parentFragmentManager.beginTransaction()
@@ -42,10 +45,15 @@ class SettingsViewFragment : Fragment() {
                 .commit()
         }
 
+        storageUsageSetting.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frame_container, StorageUsageFragment())
+                .addToBackStack(null)
+                .commit()
+        }
 
 
     }
-
 
 
 
