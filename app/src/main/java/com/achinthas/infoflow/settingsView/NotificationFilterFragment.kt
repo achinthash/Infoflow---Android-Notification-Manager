@@ -11,10 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.achinthas.infoflow.R
 import com.achinthas.infoflow.notificationView.NotificationAdapter
+import kotlinx.coroutines.launch
 
 
 class NotificationFilterFragment : Fragment() {
@@ -42,16 +44,19 @@ class NotificationFilterFragment : Fragment() {
             parentFragmentManager.popBackStack()
         }
 
-        val installedApps  = getInstalledApps(requireContext())
-
         recyclerView = view.findViewById<RecyclerView>(R.id.installedAppsRecyclerView)
 
-        adapter = AppsListAdapter(installedApps, requireContext())
+        viewLifecycleOwner.lifecycleScope.launch {
 
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            val installedApps  = getInstalledApps(requireContext())
 
-        recyclerView.adapter = adapter
+            adapter = AppsListAdapter(installedApps, requireContext())
 
+            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+            recyclerView.adapter = adapter
+
+        }
     }
 
 

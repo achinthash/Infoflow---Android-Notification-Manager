@@ -14,12 +14,12 @@ class AppsListAdapter(private val installedApps : List<InstalledApps>,
             private val context: Context) :
     RecyclerView.Adapter<AppsListAdapter.AppListHolder>() {
 
-    private val prefs = context.getSharedPreferences("app_data", Context.MODE_PRIVATE)
-    private val selectedPackages =  mutableSetOf<String>().apply {
-        addAll(
-            prefs.getStringSet("notification_block_apps",emptySet() ) ?: emptySet()
-        )
-    }
+        private val prefs = context.getSharedPreferences("app_data", Context.MODE_PRIVATE)
+        private val selectedPackages =  mutableSetOf<String>().apply {
+            addAll(
+                prefs.getStringSet("notification_filter_apps",emptySet() ) ?: emptySet()
+            )
+        }
 
 
     class AppListHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
