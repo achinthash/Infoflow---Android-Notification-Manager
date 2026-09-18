@@ -19,6 +19,8 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun notificationDao() : NotificationDao
 
     companion object {
+
+        const val DATABASE_NAME = "infoflow_database"
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
@@ -28,7 +30,7 @@ abstract class AppDatabase: RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "notification_5_database"
+                    DATABASE_NAME
                 ).build()
 
                 INSTANCE = instance
