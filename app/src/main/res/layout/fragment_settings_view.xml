@@ -296,12 +296,7 @@
 
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="Open"
-                    android:src="@drawable/baseline_chevron_right_24"
-                    app:tint="?attr/colorOnSurfaceVariant" />
+
 
             </LinearLayout>
 

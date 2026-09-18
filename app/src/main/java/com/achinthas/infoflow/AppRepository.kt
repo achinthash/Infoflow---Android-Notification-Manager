@@ -46,4 +46,8 @@ class AppRepository(private val appDao: AppDao) {
     suspend fun deleteApp(id: Long){
         return appDao.deleteApp(id)
     }
+
+    suspend fun deleteAllApps(){
+        return appDao.deleteAllApps()
+    }
 }
