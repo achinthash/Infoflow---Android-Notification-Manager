@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.achinthas.infoflow.notificationView.NotificationViewFragment
 import com.achinthas.infoflow.onboarding.OnboardingActivity
+import com.achinthas.infoflow.settingsView.SettingsViewFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {

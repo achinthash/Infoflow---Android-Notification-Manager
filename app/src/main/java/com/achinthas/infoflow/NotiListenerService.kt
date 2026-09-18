@@ -91,6 +91,15 @@ class NotiListenerService : NotificationListenerService() {
             return
         }
 
+        // block notifications from listener
+        val pref = getSharedPreferences("app_data", MODE_PRIVATE)
+        val selectedApps = pref.getStringSet("notification_block_apps", emptySet())?: emptySet()
+
+        if(packageName in selectedApps){
+            return
+        }
+
+
         val appName = try {
             val applicationInfo = packageManager.getApplicationInfo(packageName, 0)
             packageManager.getApplicationLabel(applicationInfo).toString()
@@ -170,6 +179,8 @@ class NotiListenerService : NotificationListenerService() {
                     largeIcon = largeIconPath,
                     isOngoing = ongoing
                 )
+
+
 
                 notificationRepository.insertNotification(notification)
 
