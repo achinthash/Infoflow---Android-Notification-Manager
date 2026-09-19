@@ -44,6 +44,8 @@ class SettingsViewFragment : Fragment() {
 
         val privacyPolicySetting = view.findViewById<LinearLayout>(R.id.privacyPolicySetting)
 
+        val termsConditionsSetting = view.findViewById<LinearLayout>(R.id.termsConditionsSetting)
+
         blockNotificationSetting.setOnClickListener {
 
             parentFragmentManager.beginTransaction()
@@ -66,6 +68,13 @@ class SettingsViewFragment : Fragment() {
         privacyPolicySetting.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.frame_container, PrivacyPolicySettingFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        termsConditionsSetting.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frame_container, TermsConditionsSettingFragment())
                 .addToBackStack(null)
                 .commit()
         }
