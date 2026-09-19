@@ -46,6 +46,8 @@ class SettingsViewFragment : Fragment() {
 
         val termsConditionsSetting = view.findViewById<LinearLayout>(R.id.termsConditionsSetting)
 
+        val aboutSetting = view.findViewById<LinearLayout>(R.id.aboutSetting)
+
         blockNotificationSetting.setOnClickListener {
 
             parentFragmentManager.beginTransaction()
@@ -75,6 +77,13 @@ class SettingsViewFragment : Fragment() {
         termsConditionsSetting.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.frame_container, TermsConditionsSettingFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        aboutSetting.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frame_container, AboutSettingFragment())
                 .addToBackStack(null)
                 .commit()
         }
