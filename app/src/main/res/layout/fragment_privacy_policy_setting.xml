@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?android:colorBackground">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="0dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="16dp"
+        app:title="Privacy policy"
+        app:titleTextColor="?attr/colorOnPrimary" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="32dp">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="InfoFlow is a notification management application designed to help you organize and manage notifications on your Android device."
+                android:textSize="16sp"
+                android:lineSpacingExtra="5dp"
+                android:textColor="?android:textColorPrimary"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Section 1 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1. Information We Access"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:textColor="?android:textColorPrimary"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="InfoFlow requires Notification Access to read notifications displayed by other applications.\n\nDepending on the notification, InfoFlow may access:\n\n• App name and package name\n• Notification title\n• Notification text\n• Notification category\n• Notification channel information\n• Notification time\n• Ongoing status\n• Notification images or icons when available"
+                android:textSize="15sp"
+                android:lineSpacingExtra="5dp"
+                android:textColor="?android:textColorPrimary"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Section 2 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2. How We Use Notification Data"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:textColor="?android:textColorPrimary"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Notification data is used to provide the features of InfoFlow, including:\n\n• Viewing notification history\n• Grouping notifications by application\n• Searching notifications\n• Counting notifications\n• Managing and deleting stored notifications\n• Displaying notification statistics"
+                android:textSize="15sp"
+                android:lineSpacingExtra="5dp"
+                android:textColor="?android:textColorPrimary"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Section 3 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3. Local Storage"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:textColor="?android:textColorPrimary"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="InfoFlow stores notification information locally on your Android device to provide notification history and related features."
+                android:textSize="15sp"
+                android:lineSpacingExtra="5dp"
+                android:textColor="?android:textColorPrimary"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Section 4 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="4. Sharing of Data"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="InfoFlow does not upload your notification content to our servers. Notification information is stored locally on your Android device."
+                android:textSize="15sp"
+                android:lineSpacingExtra="5dp"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Section 5 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="5. Notification Access"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Notification Access is an Android system permission. You can disable InfoFlow's notification access at any time from Android Settings."
+                android:textSize="15sp"
+                android:lineSpacingExtra="5dp"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Section 6 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="6. Deleting Your Data"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="You can delete stored notification data using the data-management options provided inside InfoFlow.\n\nUninstalling the application also removes its local application data, subject to Android's storage behavior."
+                android:textSize="15sp"
+                android:lineSpacingExtra="5dp"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Section 7 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="7. Children's Privacy"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="InfoFlow is not specifically designed to collect personal information from children."
+                android:textSize="15sp"
+                android:lineSpacingExtra="5dp"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Section 8 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="8. Changes to This Privacy Policy"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="This Privacy Policy may be updated when InfoFlow's features or data practices change."
+                android:textSize="15sp"
+                android:lineSpacingExtra="5dp"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Section 9 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="9. Contact"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="If you have questions about this Privacy Policy, please contact the InfoFlow developer through the contact information provided in the app."
+                android:textSize="15sp"
+                android:lineSpacingExtra="5dp"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Last updated: September 19, 2026"
+                android:textSize="13sp"
+                android:textColor="?android:textColorSecondary"
+                android:layout_marginTop="24dp" />
+
+        </LinearLayout>
+
+
+
+    </ScrollView>
+
+
+
+</LinearLayout>

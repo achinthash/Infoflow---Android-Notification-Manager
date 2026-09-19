@@ -42,6 +42,7 @@ class SettingsViewFragment : Fragment() {
 
         val deleteAllDataSetting = view.findViewById<LinearLayout>(R.id.deleteAllDataSetting)
 
+        val privacyPolicySetting = view.findViewById<LinearLayout>(R.id.privacyPolicySetting)
 
         blockNotificationSetting.setOnClickListener {
 
@@ -60,6 +61,13 @@ class SettingsViewFragment : Fragment() {
 
         deleteAllDataSetting.setOnClickListener {
             deleteAllData(requireContext())
+        }
+
+        privacyPolicySetting.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frame_container, PrivacyPolicySettingFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
 
