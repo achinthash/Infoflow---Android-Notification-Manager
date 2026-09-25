@@ -28,4 +28,7 @@ interface AppDao {
 
     @Query("DELETE FROM apps WHERE id = :id")
     suspend fun deleteApp(id: Long)
+
+    @Query("DELETE FROM apps")
+    suspend fun deleteAllApps()
 }

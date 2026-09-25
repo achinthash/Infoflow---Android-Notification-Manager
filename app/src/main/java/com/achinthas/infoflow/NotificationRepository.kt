@@ -28,4 +28,8 @@ class NotificationRepository(private val notificationDao: NotificationDao) {
     suspend fun getTodayNotificationCount(startOfDay:Long):Int{
         return notificationDao.getTodayNotificationCount(startOfDay)
     }
+
+    suspend fun deleteAllNotifications(){
+        return notificationDao.deleteAllNotifications()
+    }
 }

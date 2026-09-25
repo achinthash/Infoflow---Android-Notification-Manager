@@ -10,12 +10,15 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.achinthas.infoflow.AppDatabase
+import com.achinthas.infoflow.AppRepository
+import com.achinthas.infoflow.NotificationRepository
 import com.achinthas.infoflow.R
+import kotlinx.coroutines.launch
 import java.io.File
 
 class SettingsViewFragment : Fragment() {
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +40,14 @@ class SettingsViewFragment : Fragment() {
 
         val storageUsageSetting = view.findViewById<LinearLayout>(R.id.storageUsageSetting)
 
+        val deleteAllDataSetting = view.findViewById<LinearLayout>(R.id.deleteAllDataSetting)
+
+        val privacyPolicySetting = view.findViewById<LinearLayout>(R.id.privacyPolicySetting)
+
+        val termsConditionsSetting = view.findViewById<LinearLayout>(R.id.termsConditionsSetting)
+
+        val aboutSetting = view.findViewById<LinearLayout>(R.id.aboutSetting)
+
         blockNotificationSetting.setOnClickListener {
 
             parentFragmentManager.beginTransaction()
@@ -52,6 +63,48 @@ class SettingsViewFragment : Fragment() {
                 .commit()
         }
 
+        deleteAllDataSetting.setOnClickListener {
+            deleteAllData(requireContext())
+        }
+
+        privacyPolicySetting.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frame_container, PrivacyPolicySettingFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        termsConditionsSetting.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frame_container, TermsConditionsSettingFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        aboutSetting.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frame_container, AboutSettingFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
+
+    }
+
+    // delete all data
+    fun deleteAllData(context: Context) {
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            val database = AppDatabase.getDatabase(context)
+
+            val notificationRepo = NotificationRepository(database.notificationDao())
+            val appRepo = AppRepository(database.appDao())
+
+            notificationRepo.deleteAllNotifications()
+            appRepo.deleteAllApps()
+
+            context.getExternalFilesDir(null)?.deleteRecursively()
+        }
 
     }
 
