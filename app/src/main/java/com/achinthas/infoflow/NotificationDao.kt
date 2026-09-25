@@ -37,4 +37,7 @@ interface NotificationDao {
 
     @Query("DELETE FROM notifications")
     suspend fun deleteAllNotifications()
+
+    @Query("""SELECT COUNT(*) FROM notifications WHERE postedTime >= :startOfDay AND isRead = 0""" )
+    suspend fun getTodayUnreadCount(startOfDay: Long):Int
 }
