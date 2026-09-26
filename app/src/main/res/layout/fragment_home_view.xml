@@ -240,6 +240,135 @@
             </LinearLayout>
 
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardTopApps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                >
+
+                <!-- Title -->
+                <TextView
+                    android:id="@+id/txtTopAppsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Top apps"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <!-- App 1 -->
+                <ImageView
+                    android:id="@+id/imgTopApp1Icon"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="20dp"
+                    android:contentDescription="App icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtTopAppsTitle" />
+
+                <TextView
+                    android:id="@+id/txtTopApp1Name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text=""
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/imgTopApp1Icon"
+                    app:layout_constraintEnd_toStartOf="@id/txtTopApp1Count"
+                    app:layout_constraintTop_toTopOf="@id/imgTopApp1Icon"
+                    app:layout_constraintBottom_toBottomOf="@id/imgTopApp1Icon" />
+
+                <TextView
+                    android:id="@+id/txtTopApp1Count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/imgTopApp1Icon"
+                    app:layout_constraintBottom_toBottomOf="@id/imgTopApp1Icon" />
+
+
+                <!-- App 2 -->
+                <ImageView
+                    android:id="@+id/imgTopApp2Icon"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="16dp"
+                    android:contentDescription="App icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/imgTopApp1Icon" />
+
+                <TextView
+                    android:id="@+id/txtTopApp2Name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text=""
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/imgTopApp2Icon"
+                    app:layout_constraintEnd_toStartOf="@id/txtTopApp2Count"
+                    app:layout_constraintTop_toTopOf="@id/imgTopApp2Icon"
+                    app:layout_constraintBottom_toBottomOf="@id/imgTopApp2Icon" />
+
+                <TextView
+                    android:id="@+id/txtTopApp2Count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/imgTopApp2Icon"
+                    app:layout_constraintBottom_toBottomOf="@id/imgTopApp2Icon" />
+
+
+                <!-- App 3 -->
+                <ImageView
+                    android:id="@+id/imgTopApp3Icon"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="16dp"
+                    android:contentDescription="App icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/imgTopApp2Icon" />
+
+                <TextView
+                    android:id="@+id/txtTopApp3Name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text=""
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/imgTopApp3Icon"
+                    app:layout_constraintEnd_toStartOf="@id/txtTopApp3Count"
+                    app:layout_constraintTop_toTopOf="@id/imgTopApp3Icon"
+                    app:layout_constraintBottom_toBottomOf="@id/imgTopApp3Icon" />
+
+                <TextView
+                    android:id="@+id/txtTopApp3Count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/imgTopApp3Icon"
+                    app:layout_constraintBottom_toBottomOf="@id/imgTopApp3Icon" />
+
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
         </LinearLayout>
 
 

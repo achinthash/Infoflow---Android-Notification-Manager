@@ -63,4 +63,17 @@ interface NotificationDao {
     """)
     suspend fun getLast7WeeksNotificationsCounts(): List<WeeklyNotificationCount>
 
+
+    @Query(""" SELECT 
+        apps.packageName AS packageName,
+        apps.appName AS appName,
+        COUNT(notifications.id) AS count
+    FROM apps
+    INNER JOIN notifications
+        ON apps.id = notifications.appId
+    GROUP BY apps.id
+    ORDER BY count DESC
+    LIMIT 3
+    """)
+    suspend fun getTop3AppsByNotificationCount(): List<TopAppNotificationCount>
 }

@@ -44,4 +44,8 @@ class NotificationRepository(private val notificationDao: NotificationDao) {
     suspend fun getLast7WeeksNotificationsCounts():List<WeeklyNotificationCount>{
         return notificationDao.getLast7WeeksNotificationsCounts()
     }
+
+    suspend fun getTop3AppsByNotificationCount():List<TopAppNotificationCount>{
+        return notificationDao.getTop3AppsByNotificationCount()
+    }
 }

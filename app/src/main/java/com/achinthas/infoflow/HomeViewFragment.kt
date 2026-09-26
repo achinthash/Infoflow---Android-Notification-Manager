@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.charts.BarChart
@@ -56,6 +56,18 @@ class HomeViewFragment : Fragment() {
         val chartPeriodToggle = view.findViewById<MaterialButtonToggleGroup>(R.id.chartPeriodToggle)
         notificationBarChart = view.findViewById(R.id.notificationBarChart)
 
+        // top used apps
+        val imgTopApp1Icon = view.findViewById<ImageView>(R.id.imgTopApp1Icon)
+        val txtTopApp1Name = view.findViewById<TextView>(R.id.txtTopApp1Name)
+        val txtTopApp1Count = view.findViewById<TextView>(R.id.txtTopApp1Count)
+
+        val imgTopApp2Icon = view.findViewById<ImageView>(R.id.imgTopApp2Icon)
+        val txtTopApp2Name = view.findViewById<TextView>(R.id.txtTopApp2Name)
+        val txtTopApp2Count = view.findViewById<TextView>(R.id.txtTopApp2Count)
+
+        val imgTopApp3Icon = view.findViewById<ImageView>(R.id.imgTopApp3Icon)
+        val txtTopApp3Name = view.findViewById<TextView>(R.id.txtTopApp3Name)
+        val txtTopApp3Count = view.findViewById<TextView>(R.id.txtTopApp3Count)
 
         // bar chart
         // Daily / Weekly switch
@@ -136,6 +148,38 @@ class HomeViewFragment : Fragment() {
             // total apps count
             val totalAppsCount = appRepository.getTotalAppsCount()
             txtTotalAppCount.text = totalAppsCount.toString()
+
+
+            // top apps
+            val top3apps = notificationRepository.getTop3AppsByNotificationCount()
+            val packageManager = requireContext().packageManager
+
+            top3apps.forEachIndexed { index, app ->
+
+                val icon = try {
+                    packageManager.getApplicationIcon(app.packageName)
+                } catch (e: Exception) {
+                    null
+                }
+
+                when (index){
+                    0-> {
+                        txtTopApp1Name.text = app.appName
+                        txtTopApp1Count.text = app.count.toString()
+                        icon.let { imgTopApp1Icon.setImageDrawable(it) }
+                    }
+                    1-> {
+                        txtTopApp2Name.text = app.appName
+                        txtTopApp2Count.text = app.count.toString()
+                        icon.let { imgTopApp2Icon.setImageDrawable(it) }
+                    }
+                    2-> {
+                        txtTopApp3Name.text = app.appName
+                        txtTopApp3Count.text = app.count.toString()
+                        icon.let { imgTopApp3Icon.setImageDrawable(it) }
+                    }
+                }
+            }
 
         }
 
