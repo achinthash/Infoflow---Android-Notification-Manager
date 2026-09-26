@@ -54,5 +54,9 @@ dependencies {
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
     ksp("androidx.room:room-compiler:$room_version")
+
+    // bar chart
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
 }
 

@@ -182,6 +182,63 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+            <!-- chart -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Chart header -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Notifications"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <!-- Daily / Weekly switch -->
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/chartPeriodToggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true"
+                        app:checkedButton="@id/btnDaily">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnDaily"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="Daily"
+                            android:textSize="12sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnWeekly"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="Weekly"
+                            android:textSize="12sp" />
+
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                </LinearLayout>
+
+                <!-- Chart -->
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/notificationBarChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginTop="16dp" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
 

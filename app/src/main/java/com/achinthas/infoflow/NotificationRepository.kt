@@ -36,4 +36,12 @@ class NotificationRepository(private val notificationDao: NotificationDao) {
     suspend fun getTodayUnreadCount(startOfDay: Long):Int{
         return notificationDao.getTodayUnreadCount(startOfDay)
     }
+
+    suspend fun getLast7NotificationsCountByDay():List<DailyNotificationCount>{
+        return notificationDao.getLast7NotificationsCountByDay()
+    }
+
+    suspend fun getLast7WeeksNotificationsCounts():List<WeeklyNotificationCount>{
+        return notificationDao.getLast7WeeksNotificationsCounts()
+    }
 }

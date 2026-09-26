@@ -40,4 +40,27 @@ interface NotificationDao {
 
     @Query("""SELECT COUNT(*) FROM notifications WHERE postedTime >= :startOfDay AND isRead = 0""" )
     suspend fun getTodayUnreadCount(startOfDay: Long):Int
+
+    @Query("""SELECT date(postedTime / 1000, 'unixepoch', 'localtime') AS date,
+        COUNT(*) AS count  
+        FROM notifications
+        WHERE postedTime >= strftime('%s', 'now', '-6 days') * 1000
+        GROUP BY date
+        ORDER BY date ASC""")
+    suspend fun getLast7NotificationsCountByDay(): List<DailyNotificationCount>
+
+
+    @Query("""
+        SELECT 
+            strftime('%Y-%W', postedTime / 1000, 'unixepoch', 'localtime') AS year_week,
+            MIN(DATE(postedTime / 1000, 'unixepoch', 'localtime')) AS week_start_date,
+            COUNT(*) AS count
+        FROM notifications
+        WHERE postedTime >= strftime('%s', 'now', '-49 days') * 1000
+        GROUP BY year_week
+        ORDER BY year_week ASC
+        LIMIT 7
+    """)
+    suspend fun getLast7WeeksNotificationsCounts(): List<WeeklyNotificationCount>
+
 }
