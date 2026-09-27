@@ -1,14 +1,377 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeViewFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    android:orientation="vertical"
+    tools:context=".settingsView.SettingsViewFragment">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="hello_home_fragment" />
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="0dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="16dp"
+        app:title="Infoflow"
+        app:titleTextColor="?attr/colorOnPrimary" />
 
-</FrameLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="16dp">
+
+            <!-- Greeting Title -->
+            <TextView
+                android:id="@+id/txtGreeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Welcome, "
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <!-- Date Subtitle -->
+            <TextView
+                android:id="@+id/txtCurrentDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Sunday, September 20"
+                android:textSize="16sp" />
+
+
+            <!-- Notification Summary Card -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardShowsSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_notification_summary"
+                android:elevation="1dp"
+                android:padding="20dp" >
+
+                <!-- Card Title -->
+                <TextView
+                    android:id="@+id/txtTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Notifications today"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- Count Description -->
+                <TextView
+                    android:id="@+id/txtTodayNotificationCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    android:text=""
+                    android:textSize="64sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtTitle" />
+
+                <TextView
+                    android:id="@+id/txtSubtext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="notifications"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/txtTodayNotificationCount"
+                    app:layout_constraintStart_toEndOf="@id/txtTodayNotificationCount" />
+
+                <!-- Divider -->
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:background="#2E3033"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtTodayNotificationCount" />
+
+                <!-- Unread -->
+                <TextView
+                    android:id="@+id/txtTodayLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Unread"
+                    android:textColor="#C5C6C8"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider" />
+
+                <TextView
+                    android:id="@+id/txtTodayUnreadNotificationCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@id/txtTodayLabel"
+                    app:layout_constraintTop_toBottomOf="@id/txtTodayLabel" />
+
+                <!-- Total apps  -->
+                <TextView
+                    android:id="@+id/txtTotalAppLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total apps"
+                    android:textColor="#C5C6C8"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@id/txtTotalLabel"
+                    app:layout_constraintStart_toEndOf="@id/txtTodayLabel"
+                    app:layout_constraintTop_toTopOf="@id/txtTodayLabel" />
+
+                <TextView
+                    android:id="@+id/txtTotalAppCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@id/txtTotalAppLabel"
+                    app:layout_constraintTop_toBottomOf="@id/txtTotalAppLabel" />
+
+                <!-- total count -->
+                <TextView
+                    android:id="@+id/txtTotalLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total"
+                    android:textColor="#C5C6C8"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/txtTodayLabel" />
+
+                <TextView
+                    android:id="@+id/txtTotalNotificationCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtTotalLabel" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <!-- chart -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Chart header -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Notifications"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <!-- Daily / Weekly switch -->
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/chartPeriodToggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true"
+                        app:checkedButton="@id/btnDaily">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnDaily"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="Daily"
+                            android:textSize="12sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnWeekly"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="Weekly"
+                            android:textSize="12sp" />
+
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                </LinearLayout>
+
+                <!-- Chart -->
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/notificationBarChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginTop="16dp" />
+
+            </LinearLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardTopApps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                >
+
+                <!-- Title -->
+                <TextView
+                    android:id="@+id/txtTopAppsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Top apps"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <!-- App 1 -->
+                <ImageView
+                    android:id="@+id/imgTopApp1Icon"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="20dp"
+                    android:contentDescription="App icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtTopAppsTitle" />
+
+                <TextView
+                    android:id="@+id/txtTopApp1Name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text=""
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/imgTopApp1Icon"
+                    app:layout_constraintEnd_toStartOf="@id/txtTopApp1Count"
+                    app:layout_constraintTop_toTopOf="@id/imgTopApp1Icon"
+                    app:layout_constraintBottom_toBottomOf="@id/imgTopApp1Icon" />
+
+                <TextView
+                    android:id="@+id/txtTopApp1Count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/imgTopApp1Icon"
+                    app:layout_constraintBottom_toBottomOf="@id/imgTopApp1Icon" />
+
+
+                <!-- App 2 -->
+                <ImageView
+                    android:id="@+id/imgTopApp2Icon"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="16dp"
+                    android:contentDescription="App icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/imgTopApp1Icon" />
+
+                <TextView
+                    android:id="@+id/txtTopApp2Name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text=""
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/imgTopApp2Icon"
+                    app:layout_constraintEnd_toStartOf="@id/txtTopApp2Count"
+                    app:layout_constraintTop_toTopOf="@id/imgTopApp2Icon"
+                    app:layout_constraintBottom_toBottomOf="@id/imgTopApp2Icon" />
+
+                <TextView
+                    android:id="@+id/txtTopApp2Count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/imgTopApp2Icon"
+                    app:layout_constraintBottom_toBottomOf="@id/imgTopApp2Icon" />
+
+
+                <!-- App 3 -->
+                <ImageView
+                    android:id="@+id/imgTopApp3Icon"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="16dp"
+                    android:contentDescription="App icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/imgTopApp2Icon" />
+
+                <TextView
+                    android:id="@+id/txtTopApp3Name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text=""
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/imgTopApp3Icon"
+                    app:layout_constraintEnd_toStartOf="@id/txtTopApp3Count"
+                    app:layout_constraintTop_toTopOf="@id/imgTopApp3Icon"
+                    app:layout_constraintBottom_toBottomOf="@id/imgTopApp3Icon" />
+
+                <TextView
+                    android:id="@+id/txtTopApp3Count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/imgTopApp3Icon"
+                    app:layout_constraintBottom_toBottomOf="@id/imgTopApp3Icon" />
+
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>
