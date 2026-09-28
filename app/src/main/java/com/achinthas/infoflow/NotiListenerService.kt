@@ -93,7 +93,7 @@ class NotiListenerService : NotificationListenerService() {
 
         // block notifications from listener
         val pref = getSharedPreferences("app_data", MODE_PRIVATE)
-        val selectedApps = pref.getStringSet("notification_block_apps", emptySet())?: emptySet()
+        val selectedApps = pref.getStringSet("notification_filter_apps", emptySet())?: emptySet()
 
         if(packageName in selectedApps){
             return

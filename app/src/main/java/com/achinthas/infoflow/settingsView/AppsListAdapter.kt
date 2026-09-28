@@ -58,7 +58,7 @@ class AppsListAdapter(private val installedApps : List<InstalledApps>,
 
             prefs.edit()
                 .putStringSet(
-                    "notification_block_apps",
+                    "notification_filter_apps",
                     selectedPackages
                 )
                 .apply()
