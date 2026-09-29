@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -64,7 +65,9 @@ class SettingsViewFragment : Fragment() {
         }
 
         deleteAllDataSetting.setOnClickListener {
-            deleteAllData(requireContext())
+//            deleteAllData(())
+
+            showDeleteConfirmationDialog()
         }
 
         privacyPolicySetting.setOnClickListener {
@@ -106,6 +109,21 @@ class SettingsViewFragment : Fragment() {
             context.getExternalFilesDir(null)?.deleteRecursively()
         }
 
+    }
+
+    // dialog box confirmation
+    private fun showDeleteConfirmationDialog() {
+        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setTitle("Delete all data?")
+            .setMessage(
+                "This will permanently delete all saved notifications, app data, " +
+                        "and notification images. This action cannot be undone."
+            )
+            .setNegativeButton("Cancel", null)
+            .setPositiveButton("Delete") { _, _ ->
+                deleteAllData(requireContext())
+            }
+            .show()
     }
 
 
