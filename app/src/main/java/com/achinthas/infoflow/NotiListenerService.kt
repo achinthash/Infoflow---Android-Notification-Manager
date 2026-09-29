@@ -301,7 +301,7 @@ class NotiListenerService : NotificationListenerService() {
 
 
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.baseline_android_24)
+            .setSmallIcon(R.drawable.ic_stat_bell)
             .setContentTitle("$todayCount notifications today")
             .setContentText("$totalCount total • $appsCount Apps")
             .setOngoing(true)
