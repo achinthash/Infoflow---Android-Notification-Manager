@@ -6,6 +6,8 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
@@ -89,6 +91,13 @@ class NotiListenerService : NotificationListenerService() {
         // Ignore nullable title and text notifications
         if(title.isNullOrBlank() && text.isNullOrBlank()){
             return
+        }
+
+        // ignore ongoing system apps notifications
+        if(isSystemApp(applicationContext, packageName)){
+            if(ongoing){
+                return
+            }
         }
 
         // block notifications from listener
@@ -273,6 +282,15 @@ class NotiListenerService : NotificationListenerService() {
 
     }
 
+    // checking package is system app
+    fun isSystemApp(context: Context, packageName: String): Boolean {
+        return try {
+            val ai = context.packageManager.getApplicationInfo(packageName, 0)
+            (ai.flags and ApplicationInfo.FLAG_SYSTEM) != 0
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
+    }
 
     // notification channel create
     private fun createNotificationChannel(){
