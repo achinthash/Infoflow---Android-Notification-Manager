@@ -37,6 +37,8 @@ class SettingsViewFragment : Fragment() {
 
         toolbar.title = "Settings"
 
+        val themeSetting = view.findViewById<LinearLayout>(R.id.themeSetting)
+
         val blockNotificationSetting = view.findViewById<LinearLayout>(R.id.blockNotificationSetting)
 
         val storageUsageSetting = view.findViewById<LinearLayout>(R.id.storageUsageSetting)
@@ -48,6 +50,11 @@ class SettingsViewFragment : Fragment() {
         val termsConditionsSetting = view.findViewById<LinearLayout>(R.id.termsConditionsSetting)
 
         val aboutSetting = view.findViewById<LinearLayout>(R.id.aboutSetting)
+
+        themeSetting.setOnClickListener {
+            val bottomSheet = ThemeBottomSheetViewFragment()
+            bottomSheet.show(parentFragmentManager, "ThemeBottomSheet")
+        }
 
         blockNotificationSetting.setOnClickListener {
 
