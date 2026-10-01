@@ -20,6 +20,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        // theme manager call
+        ThemeManager.applySaveTheme(this)
+
         // splash screen implements
         installSplashScreen()
 
