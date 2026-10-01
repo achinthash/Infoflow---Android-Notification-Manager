@@ -288,25 +288,18 @@ class NotificationAdapter(private var allNotifications: List<NotificationEntity>
     }
 
     private fun loadNotificationImage(imageView: ImageView, filePath: String?) {
+        val defaultIcon = com.achinthas.infoflow.R.drawable.ic_stat_bell
 
         if (filePath.isNullOrEmpty()) {
-            imageView.setImageResource(com.achinthas.infoflow.R.drawable.baseline_android_24)
+            imageView.setImageResource(defaultIcon)
             return
         }
 
-        val imageFile = File(filePath)
-
-        if (!imageFile.exists()) {
-            imageView.setImageResource(com.achinthas.infoflow.R.drawable.baseline_android_24)
-            return
-        }
-
-        val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
-
+        val bitmap = BitmapFactory.decodeFile(filePath)
         if (bitmap != null) {
             imageView.setImageBitmap(bitmap)
         } else {
-            imageView.setImageResource(com.achinthas.infoflow.R.drawable.baseline_android_24)
+            imageView.setImageResource(defaultIcon)
         }
     }
 
