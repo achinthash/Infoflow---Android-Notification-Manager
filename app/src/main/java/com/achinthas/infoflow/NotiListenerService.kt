@@ -143,22 +143,29 @@ class NotiListenerService : NotificationListenerService() {
                 //        }
                 //        saveDrawable(appIconDrawable, folder, "app_icon_$packageName.png")
 
-                // 2. Small icon (status bar monochrome icon)
-                //        val smallIconDrawable = try {
-                //            sbn.notification.smallIcon?.loadDrawable(this)
-                //        } catch (e: Exception) {
-                //            null
-                //        }
-                //        saveDrawable(smallIconDrawable, folder, "small_icon_$packageName.png")
-
-
                 // 3. Large icon (avatar / thumbnail shown on the left of the notification)
                 val largeIconDrawable = try {
                     sbn.notification.getLargeIcon()?.loadDrawable(applicationContext)
                 } catch (e: Exception) {
                     null
                 }
-                val largeIconPath = saveDrawable(largeIconDrawable, folder, "large_icon_${id}_${postTime}.png")
+                var largeIconPath = saveDrawable(largeIconDrawable, folder, "large_icon_${id}_${postTime}.png")
+
+                // replace nullable large icons to app small icon
+                if(largeIconPath.isNullOrEmpty()){
+
+                    // if large icon is null or empty using small icon
+                    // 2. Small icon (status bar monochrome icon)
+                    val smallIconDrawable = try {
+                        sbn.notification.smallIcon?.loadDrawable(applicationContext)
+                    } catch (e: Exception) {
+                        null
+                    }
+                    val smallIconPath = saveDrawable(smallIconDrawable, folder, "small_icon_$packageName.png")
+
+
+                    largeIconPath = smallIconPath
+                }
 
                 // 4. Big picture — classic Bitmap style (older API / most apps)
                 // IMPORTANT -  Above Android 12+ (API level 31) some apps use  EXTRA_PICTURE_ICON instead but
